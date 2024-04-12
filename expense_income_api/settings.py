@@ -11,9 +11,17 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from os import getenv, path
+import dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+dotenv_file = BASE_DIR / ".env.local"
+
+if path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 
 
 # Quick-start development settings - unsuitable for production
@@ -80,11 +88,11 @@ WSGI_APPLICATION = "expense_income_api.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "expense_income_tracker",
-        "USER": "postgres",
-        "PASSWORD": "jaibhawani09",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": getenv("DATABASE_NAME"),
+        "USER": getenv("DATABASE_USER"),
+        "PASSWORD": getenv("DATABASE_PASSWORD"),
+        "HOST": getenv("DATABASE_HOST"),
+        "PORT": getenv("DATABASE_PORT"),
     }
 }
 
