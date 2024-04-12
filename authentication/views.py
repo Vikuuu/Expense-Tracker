@@ -1,6 +1,6 @@
 from rest_framework.response import Response
-from rest_framework import generics, status
-from .serializers import RegisterSerializer
+from rest_framework import generics, status, views
+from .serializers import RegisterSerializer, EmailVerificationSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from .utils import Util
@@ -8,6 +8,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 import jwt
 from django.conf import settings
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 User = get_user_model()
 
@@ -50,13 +52,22 @@ class RegisterView(generics.GenericAPIView):
         return Response(user_data, status=status.HTTP_201_CREATED)
 
 
-class VerifyEmail(generics.GenericAPIView):
+class VerifyEmail(views.APIView):
+    serializer_class = EmailVerificationSerializer
+    token_param_config = openapi.Parameter(
+        "token",
+        in_=openapi.IN_QUERY,
+        description="Description",
+        type=openapi.TYPE_STRING,
+    )
+
+    @swagger_auto_schema(manual_parameters=[token_param_config])
     def get(self, request):
         token = request.GET.get("token")
 
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY)
-            user = User.objects.get(id=payload("user_id"))
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            user = User.objects.get(id=payload["user_id"])
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
@@ -67,9 +78,11 @@ class VerifyEmail(generics.GenericAPIView):
 
         except jwt.ExpiredSignatureError as identifier:
             return Response(
-                {"error": "Activation Expired"}, status=status.HTTP_400_BAD_REQUEST
+                {"error": "Activation Expired" + str(identifier)},
+                status=status.HTTP_400_BAD_REQUEST,
             )
         except jwt.exceptions.DecodeError as identifier:
             return Response(
-                {"error": "Invalid Token"}, status=status.HTTP_400_BAD_REQUEST
+                {"error": "Invalid Token" + str(identifier)},
+                status=status.HTTP_400_BAD_REQUEST,
             )
