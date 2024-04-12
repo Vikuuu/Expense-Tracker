@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third-party app
     "rest_framework",
+    "drf_yasg",
     # Local Apps
     "authentication",
 ]
@@ -141,7 +142,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "authentication.UserAccount"
 
 REST_FRAMEWORK = {
-    "NON_FIELD_ERRORS_KEY": "ERROR",
+    "NON_FIELD_ERRORS_KEY": "error",
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
