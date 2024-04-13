@@ -1,6 +1,10 @@
 from rest_framework.response import Response
 from rest_framework import generics, status, views
-from .serializers import RegisterSerializer, EmailVerificationSerializer
+from .serializers import (
+    RegisterSerializer,
+    EmailVerificationSerializer,
+    LoginSerializer,
+)
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from .utils import Util
@@ -86,3 +90,14 @@ class VerifyEmail(views.APIView):
                 {"error": "Invalid Token" + str(identifier)},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+
+class LoginView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+
+    def post(self, request):
+        user = request.data
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
