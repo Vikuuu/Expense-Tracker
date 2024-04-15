@@ -4,16 +4,15 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class Expenses(models.Model):
-    CATEGORY_OPTIONS = [
-        ("ONLINE_SERVICES", "ONLINE_SERVICES"),
-        ("TRAVEL", "TRAVEL"),
-        ("FOOD", "FOOD"),
-        ("RENT", "RENT"),
+class Income(models.Model):
+    SOURCE_OPTIONS = [
+        ("SALARY", "SALARY"),
+        ("BUSINESS", "BUSINESS"),
+        ("SIDE-HUSTLES", "SIDE-HUSTLES"),
         ("OTHERS", "OTHERS"),
     ]
 
-    category = models.CharField(choices=CATEGORY_OPTIONS, max_length=255)
+    source = models.CharField(choices=SOURCE_OPTIONS, max_length=255)
     amount = models.DecimalField(decimal_places=2, max_digits=10)
     description = models.TextField()
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
@@ -23,4 +22,4 @@ class Expenses(models.Model):
         ordering: ["-date"]
 
     def __str__(self) -> str:
-        return str(self.owner) + "'s expenses"
+        return str(self.owner) + "'s income"
