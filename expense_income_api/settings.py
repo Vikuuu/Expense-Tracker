@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "drf_yasg",
     # Local Apps
     "authentication",
+    "expenses",
 ]
 
 MIDDLEWARE = [
@@ -153,3 +154,13 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = getenv("USER_EMAIL")
 EMAIL_HOST_PASSWORD = getenv("USER_EMAIL_PASSWORD")
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+        }
+    }
+}
