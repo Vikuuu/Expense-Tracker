@@ -28,10 +28,6 @@ class ExpenseDetailView(RetrieveUpdateDestroyAPIView):
     ]
     lookup_field = "id"
 
-    # over-riding this method so that the logged in user is the one that is added in the model of the expense
-    def perform_create(self, serializer):
-        return serializer.save(owner=self.request.user)
-
     # over-riding this method so that the logged user gets only there expenses list.
     def get_queryset(self):
         return self.queryset.filter(owner=self.request.user)
