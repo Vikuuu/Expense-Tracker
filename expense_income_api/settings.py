@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from os import getenv, path
 import dotenv
+import datetime
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -166,4 +167,9 @@ SWAGGER_SETTINGS = {
             "in": "header",
         }
     }
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=10),
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=1),
 }
