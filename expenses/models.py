@@ -20,7 +20,7 @@ class Expenses(models.Model):
     date = models.DateField(null=False, blank=False)
 
     class Meta:
-        ordering: ["-date"]
+        ordering: ["-date"] # type: ignore
 
     def __str__(self) -> str:
         return str(self.owner) + "'s expenses"
