@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "authentication",
     "expenses",
     "income",
+    "userstats",
 ]
 
 MIDDLEWARE = [
@@ -176,4 +177,4 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=1),
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGINS_ALLOW_ALL = True
