@@ -10,6 +10,7 @@ from django.utils.encoding import (
     DjangoUnicodeDecodeError,
 )
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 User = get_user_model()
 
@@ -68,8 +69,11 @@ class LoginSerializer(serializers.ModelSerializer):
         #     raise serializers.ValidationError("Password is required")
 
         user = auth.authenticate(email=email, password=password)
-        
-        if  filtered_user_by_email.exists() and filtered_user_by_email[0].auth_provider != "email":
+
+        if (
+            filtered_user_by_email.exists()
+            and filtered_user_by_email[0].auth_provider != "email"
+        ):
             raise AuthenticationFailed(
                 detail="Please continue your login using"
                 + filtered_user_by_email[0].auth_provider
@@ -125,3 +129,19 @@ class SetNewPasswordSerializer(serializers.Serializer):
 
 class BasicSerializer(serializers.Serializer):
     pass
+
+
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    default_error_messages = {"Bad_token": ("Token is expired or failed")}
+
+    def validate(self, attrs):
+        self.token = attrs["refresh"]
+        return attrs
+
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.token).blacklist()
+        except TokenError:
+            self.fail("Bad_token")

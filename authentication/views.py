@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework import generics, status, views
+from rest_framework import generics, status, views, permissions
 from .serializers import (
     RegisterSerializer,
     EmailVerificationSerializer,
@@ -7,6 +7,7 @@ from .serializers import (
     RequestPasswordEmailRequestSerializer,
     SetNewPasswordSerializer,
     BasicSerializer,
+    LogoutSerializer,
 )
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
@@ -195,3 +196,14 @@ class SetNewPasswordView(generics.GenericAPIView):
             {"success": True, "message": "Password Reset Successfully"},
             status=status.HTTP_200_OK,
         )
+
+
+class LogoutView(generics.GenericAPIView):
+    serializer_class = LogoutSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
