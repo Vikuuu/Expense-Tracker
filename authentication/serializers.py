@@ -61,13 +61,19 @@ class LoginSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         email = attrs.get("email", "")
         password = attrs.get("password", "")
-
-        if not email:
-            raise serializers.ValidationError("Email is required")
-        if not password:
-            raise serializers.ValidationError("Password is required")
+        filtered_user_by_email = User.objects.filter(email=email)
+        # if not email:
+        #     raise serializers.ValidationError("Email is required")
+        # if not password:
+        #     raise serializers.ValidationError("Password is required")
 
         user = auth.authenticate(email=email, password=password)
+        
+        if  filtered_user_by_email.exists() and filtered_user_by_email[0].auth_provider != "email":
+            raise AuthenticationFailed(
+                detail="Please continue your login using"
+                + filtered_user_by_email[0].auth_provider
+            )
 
         if not user:
             raise AuthenticationFailed("Invalid credentials, Try Again")

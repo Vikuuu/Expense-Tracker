@@ -24,6 +24,7 @@ urlpatterns = [
     path("expenses/", include("expenses.urls")),
     path("incomes/", include("income.urls")),
     path("userstats/", include("userstats.urls")),
+    path("social-auth/", include("social_auth.urls")),
     path(
         "",
         schema_view.with_ui("swagger", cache_timeout=0),
