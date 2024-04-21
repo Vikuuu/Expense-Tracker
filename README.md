@@ -10,12 +10,16 @@ Welcome to Expense Tracker! This repository contains the backend code for an exp
 - **Expense CRUD**: Users can create, retrieve, update, and delete expenses.
 - **Income CRUD**: Users can create, retrieve, update, and delete incomes.
 - **Swagger Documentation**: The API endpoints are documented using Swagger.
+- **Social Authentication**: Users can sign in using Google, Facebook, and Twitter accounts.
 
 ## Technologies Used
 
 - **Django**: A high-level Python web framework that encourages rapid development and clean, pragmatic design.
 - **Django Rest Framework (DRF)**: A powerful and flexible toolkit for building Web APIs in Django.
 - **Swagger**: An open-source software framework backed by a large ecosystem of tools that helps developers design, build, document, and consume RESTful Web services.
+- **Google API Python Client**: Python library for accessing Google's APIs.
+- **Facebook SDK**: Python library for interacting with Facebook's Graph API.
+- **python-twitter**: Python library for accessing Twitter's API.
 
 ## Setup Instructions
 
@@ -32,30 +36,40 @@ git clone https://github.com/Vikuuu/Expense-Tracker.git
 ```bash
 cd Expense_Tracker
 ```
+3. Create a Virtual Environment
 
-3. Install the required dependencies:
+```bash
+python -m venv venv
+```
+
+4. Activate the Environment
+```bash
+venv/scripts/activate
+```
+
+5. Install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Run migrations to create the database schema:
+6. Run migrations to create the database schema:
 
 ```bash
 python manage.py migrate
 ```
 
-5. Start the development server:
+7. Start the development server:
 
 ```bash
 python manage.py runserver
 ```
 
-6. Access the application at [http://localhost:8000](http://localhost:8000).
+8. Access the application at [http://localhost:8000](http://localhost:8000).
 
 ## API Documentation
 
-The API endpoints are documented using Swagger. Once the server is running, you can access the Swagger documentation at [http://localhost:8000/swagger/](http://localhost:8000/swagger/) to explore the available endpoints and their usage.
+The API endpoints are documented using Swagger. Once the server is running, you can access the Swagger documentation at [http://localhost:8000/](http://localhost:8000/) to explore the available endpoints and their usage.
 
 ## Contributing
 
