@@ -14,6 +14,7 @@ from pathlib import Path
 from os import getenv, path
 import dotenv
 import datetime
+import dj_database_url
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,12 +30,12 @@ if path.isfile(dotenv_file):
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-x14vs+_im%v+bij(z3zm*^o&k3dsetr%y9b%@)2=ug0((7e(tu"
+SECRET_KEY = getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = getenv("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = getenv("ALLOWED_HOST").split(",")
 
 
 # Application definition
@@ -104,6 +105,7 @@ DATABASES = {
     }
 }
 
+DATABASES["default"] = dj_database_url.parse(getenv("DATABASE_URL"))
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
